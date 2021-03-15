@@ -21,6 +21,9 @@ class AddUsersTable extends Migration
             $table->string('phone')->unique()->nullable();
             $table->string('password');
             $table->string('api_token', 80)->unique()->nullable()->default(null);
+            $table->timestamp('email_verified_at')->nullable();
+            $table->enum('two_step_verification', ['yes', 'no'])->nullable();
+            $table->string('otp')->nullable()->unique();
             $table->timestamps();
             $table->softDeletes();
         });

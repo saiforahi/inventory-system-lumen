@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Events\TwoStepVerificationEvent;
 use Auth;
 class AuthController extends Controller
 {
@@ -20,14 +22,36 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
-    {
-        $credentials = request(['email', 'password']);
-
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+    public function login(){
+        $credentials=request(['email','password']);
+        if(User::where('email',request('email'))->exists()){
+            if(!Hash::check(request('password'),User::where('email',request('email'))->first()->password)){
+                return response()->json(['status'=>false,'message'=>'Wrong Credentials'],403);
+            }
+            $data = array('name'=>User::where('email',request('email'))->first()->name);
+            // Mail::send('mail', $data, function($message) {
+            //     $message->to(request('email'), '')->subject('Test Mail from inventory management');
+            //     $message->from(env('MAIL_FROM_ADDRESS'),'Stock Management 1.0');
+            // });
+            event(new TwoStepVerificationEvent(User::where('email',request('email'))->first()));
+            return response()->json(['status'=>true,'message'=>'An OTP has been sent to your email'],200);
         }
-        return $this->respondWithToken($token);
+        else{
+            return response()->json(['status'=>false,'message'=>'User does not exist'],403);
+        }
+    }
+    public function OTP_verification(Request $request)
+    {
+        if(Hash::check($request->otp,User::where('email',request('email'))->first()->otp)){
+            $credentials = request(['email', 'password']);
+            if (! $token = auth()->attempt($credentials)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            return $this->respondWithToken($token);
+        }
+        else{
+            return response()->json(['status'=>false,'message'=>'Wrong OTP']);
+        }
     }
 
     /**
@@ -47,8 +71,11 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        Auth::user()->forceFill([
+            'otp'=>null
+        ])->save();
         auth()->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['status'=>true,'message' => 'Successfully logged out']);
     }
 
     /**

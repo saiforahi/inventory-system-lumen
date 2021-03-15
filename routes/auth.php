@@ -17,5 +17,6 @@ $router->get('/key', function() {
     return \Illuminate\Support\Str::random(32);
 });
 $router->post('/login','Auth\AuthController@login');
+$router->post('/otp-verification','Auth\AuthController@OTP_verification');
 $router->post('/register','AuthController@register');
-$router->post('/logout',['middleware'=>'auth','uses'=>'AuthController@logout']);
+$router->post('/logout',['middleware'=>'auth','uses'=>'Auth\AuthController@logout']);

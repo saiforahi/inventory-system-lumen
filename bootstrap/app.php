@@ -73,7 +73,7 @@ $app->configure('app');
 */
 
 $app->middleware([
-    App\Http\Middleware\CorsMiddleware::class
+    Fruitcake\Cors\HandleCors::class,
 ]);
 
 $app->routeMiddleware([
@@ -92,7 +92,10 @@ $app->routeMiddleware([
 | totally optional, so you are not required to uncomment this line.
 |
 */
-
+//cors middleware fruitcake
+$app->register(Fruitcake\Cors\CorsServiceProvider::class);
+$app->configure('cors');
+//
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
@@ -114,7 +117,7 @@ $app->register(Spatie\Permission\PermissionServiceProvider::class);
 
 $app->register(Illuminate\Notifications\NotificationServiceProvider::class);
 $app->withFacades(true, [
-'Illuminate\Support\Facades\Notification' => 'Notification',
+    'Illuminate\Support\Facades\Notification' => 'Notification',
 ]);
 /*
 |--------------------------------------------------------------------------
@@ -133,6 +136,7 @@ $app->router->group([
     require __DIR__.'/../routes/web.php';
     require __DIR__.'/../routes/auth.php';
     require __DIR__.'/../routes/api.php';
+    require __DIR__.'/../routes/spatie.php';
 });
 
 return $app;

@@ -67,5 +67,12 @@ class PermissionsDemoSeeder extends Seeder
             'password' => Hash::make('123456'),
         ]);
         $user->assignRole($role3);
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Shaif Azad',
+            'email' => 'gixxer.fi.abs@gmail.com',
+            'phone'=> '01737552558',
+            'password' => Hash::make('123456'),
+        ]);
+        $user->assignRole($role3);
     }
 }

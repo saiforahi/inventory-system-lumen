@@ -13,6 +13,11 @@
 |
 */
 $router->get('/user',['middleware'=>'auth',function(){
-    return auth()->user();
+    return response()->json(['status'=>true,'data'=>auth()->user()]);
 }]);
+$router->group(['prefix' => 'users'],function () use ($router){
+    $router->get('all',['middleware' => 'auth','uses' => 'UserController@all_users']);
+    $router->post('store',['middleware' => 'auth','uses' => 'UserController@store']);
+    $router->delete('{id}',['middleware' => 'auth','uses' => 'UserController@destroy']);
+});
 

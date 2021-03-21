@@ -20,4 +20,10 @@ $router->group(['prefix' => 'users'],function () use ($router){
     $router->post('store',['middleware' => 'auth','uses' => 'UserController@store']);
     $router->delete('{id}',['middleware' => 'auth','uses' => 'UserController@destroy']);
 });
+$router->group(['prefix' => 'products'],function () use ($router){
+    $router->get('all',['middleware' => 'auth','uses' => 'ProductController@all_products']);
+    $router->post('store',['middleware' => 'auth','uses' => 'ProductController@store']);
+    $router->delete('{id}',['middleware' => 'auth','uses' => 'ProductController
+    +-@destroy']);
+});
 

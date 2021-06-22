@@ -33,7 +33,7 @@ class AuthController extends Controller
             //     $message->to(request('email'), '')->subject('Test Mail from inventory management');
             //     $message->from(env('MAIL_FROM_ADDRESS'),'Stock Management 1.0');
             // });
-            event(new TwoStepVerificationEvent(User::where('email',request('email'))->first()));
+            //event(new TwoStepVerificationEvent(User::where('email',request('email'))->first()));
             return response()->json(['status'=>true,'message'=>'An OTP has been sent to your email'],200);
         }
         else{

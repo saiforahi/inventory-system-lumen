@@ -23,7 +23,21 @@ $router->group(['prefix' => 'users'],function () use ($router){
 $router->group(['prefix' => 'products'],function () use ($router){
     $router->get('all',['middleware' => 'auth','uses' => 'ProductController@all_products']);
     $router->post('store',['middleware' => 'auth','uses' => 'ProductController@store']);
-    $router->delete('{id}',['middleware' => 'auth','uses' => 'ProductController
-    +-@destroy']);
+    $router->delete('{id}',['middleware' => 'auth','uses' => 'ProductController@destroy']);
+});
+$router->group(['prefix' => 'brands'],function () use ($router){
+    $router->get('all',['middleware' => 'auth','uses' => 'BrandsController@show']);
+    $router->post('store',['middleware' => 'auth','uses' => 'BrandsController@create']);
+    $router->delete('{id}',['middleware' => 'auth','uses' => 'BrandsController@delete']);
+});
+$router->group(['prefix' => 'categories'],function () use ($router){
+    $router->get('all',['middleware' => 'auth','uses' => 'CategoriesController@show']);
+    $router->post('store',['middleware' => 'auth','uses' => 'CategoriesController@create']);
+    $router->delete('{id}',['middleware' => 'auth','uses' => 'CategoriesController@delete']);
+});
+$router->group(['prefix' => 'schedules'],function () use ($router){
+    $router->get('all',['middleware' => 'auth','uses' => 'ScheduleController@all']);
+    $router->post('create',['middleware' => 'auth','uses' => 'ScheduleController@create']);
+    $router->delete('{id}',['middleware' => 'auth','uses' => 'ScheduleController@delete']);
 });
 

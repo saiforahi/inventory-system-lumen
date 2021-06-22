@@ -114,6 +114,10 @@ $app->alias('mailer', Illuminate\Contracts\Mail\MailQueue::class);
 $app->configure('permission');
 $app->alias('cache', \Illuminate\Cache\CacheManager::class);  // if you don't have this already
 $app->register(Spatie\Permission\PermissionServiceProvider::class);
+//spatie media library
+$app->register(Spatie\MediaLibrary\MediaLibraryServiceProvider::class);
+$app->configure('laravel-medialibrary');
+$app->configure('filesystems');
 
 $app->register(Illuminate\Notifications\NotificationServiceProvider::class);
 $app->withFacades(true, [
